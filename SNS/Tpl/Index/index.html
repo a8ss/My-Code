@@ -1,0 +1,48 @@
+
+<include file="Index:header" />
+
+
+	<div class="container">
+		<a href="__APP__/Group/addGroup" id="create_group">创建圈子</a>
+		<div class="section">
+			<h3 class="section_bar">圈子列表</h3>
+			<div class="section_content">
+				<ul class="list" id="group_list">
+				
+				<?php foreach ($groups as $g):
+						$g['des'] = mb_substr($g['des'],0,20,'utf-8');
+						$g['des'] .= '...';
+					?>
+					<li><a href="__APP__/Group/index/gid/{$g.id}"><img
+						title="{$g.des}"
+						src="__PUBLIC__/uploads/{$g.logo}" width="150" height="150" /></a><br />
+						<h4><a href="__APP__/Group/index/gid/{$g.id}">{$g.name}</a></h4>
+						<div>圈主: <a href="__APP__/Space/index/uid/{$g.user_id}">{$g.username}</a></div>
+						<div>会员：10人</div>
+						<div>描述：{$g.des}</div></li>
+					
+				<?php endforeach; ?>
+					
+				</ul>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="section">
+			<h3 class="section_bar">用户列表</h3>
+			<div class="section_content" id="user_list">
+				<ul class="list">
+				<?php foreach($users as $u):?>
+					<li>
+					<a href="__APP__/Space/index/uid/<?php echo $u['id']; ?>">
+					<img src="__PUBLIC__/uploads/<?php echo $u['logo']; ?>" width="50" height="50" /></a>
+					<br />
+					<a href="__APP__/Space/index/uid/<?php echo $u['id']; ?>"><?php echo $u['username']; ?></a>
+					</li>
+				<?php endforeach;?>
+				</ul>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

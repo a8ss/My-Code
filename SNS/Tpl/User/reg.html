@@ -1,0 +1,39 @@
+<include file="Index:header" />
+
+
+		<div class="container">
+			<div id="login">
+				<h1>登录</h1>
+				<hr />
+				<form action="__APP__/User/login" method="post">
+					用户名：<input type="text" name="username" /><br />
+					密码：<input type="password" name="password" /><br />
+					<input type="submit" value="登录" />
+				</form>
+			</div>
+			<div id="register">
+				<h1>注册</h1>
+				<hr />
+				<form action="__ACTION__" method="post">
+					用户名：<input type="text" name="username" /><br />
+					密码：<input type="password" name="password"/><br />
+					确认密码：<input type="password" name="chpawd" /><br />
+					验证码：<input type="text" name="verify"/>
+					<img id="code" alt="验证码" src="__APP__/Index/getVerify">
+					<br />
+					<input type="submit" value="注册" />
+				</form>
+			</div>
+		</div>
+    </body>
+</html>
+<script type="text/javascript" >
+	$(function(){
+		$('#code').click(function(){
+			var img = $('#code');
+			var src = img.attr('src') + '/' +  Math.random();
+			img.attr('src',src);
+		});
+	});
+	
+</script>

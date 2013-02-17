@@ -1,0 +1,95 @@
+<include file="Index:header" />
+
+
+<div class="container">
+	<h1>
+		{$userInfo.username}
+	</h1>
+	<img style="float: right;" id="isetlogo" src="__PUBLIC__/uploads/{$userInfo.logo}" width="150"
+		height="150" /> 
+		<?php if(isset($_SESSION['uid']) && $userInfo['id'] == $_SESSION['uid']): ?>
+		<a href="#" id="setlogo">设置头像</a> 
+		<?php elseif(!$thisRel == 1): ?>
+		<a href="__APP__/User/addFriend/uid/{$userInfo.id}">加入好友</a>
+		<?php endif; ?>
+	<div class="section short">
+		<h3 class="section_bar">我的关注</h3>
+		<div class="section_content">
+			<ul class="list">
+			
+			<?php foreach($relation['mygz'] as $v): ?>
+			
+				<li><a href="__ACTION__/uid/<?php echo $v['id']; ?>"><img src="__PUBLIC__/uploads/<?php echo $v['logo']; ?>" width="80"
+					height="80" /></a><br /><a href="__ACTION__/uid/<?php echo $v['id']; ?>"><?php echo $v['username']; ?></a></li>
+				
+			<?php endforeach;?>
+			
+			</ul>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="section short">
+		<h3 class="section_bar">我的好友</h3>
+		<div class="section_content">
+			<ul class="list">
+				<?php foreach($relation['friend'] as $v): ?>
+				
+				<li><a href="__ACTION__/uid/<?php echo $v['id']; ?>"><img src="__PUBLIC__/uploads/<?php echo $v['logo']; ?>" width="80"
+					height="80" /></a><br /><a href="__ACTION__/uid/<?php echo $v['id']; ?>"><?php echo $v['username']; ?></a></li>
+					
+				<?php endforeach;?>
+				
+			</ul>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="section short">
+		<h3 class="section_bar">关注我的</h3>
+		<div class="section_content">
+			<ul class="list">
+			
+				<?php foreach($relation['gzmy'] as $v): ?>
+				
+				<li><a href="__ACTION__/uid/<?php echo $v['id']; ?>"><img src="__PUBLIC__/uploads/<?php echo $v['logo']; ?>" width="80"
+					height="80" /></a><br /><a href="__ACTION__/uid/<?php echo $v['id']; ?>"><?php echo $v['username']; ?></a></li>
+					
+				<?php endforeach;?>
+				
+			</ul>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+
+<iframe style="display:none" name="subm"></iframe>
+<div id="divsetlogo">
+	<a href="#" id="X">[关闭]</a>
+	<form target="subm" action="__URL__/setlogo" method="post" enctype="multipart/form-data">
+		<input type="file" name="logo" />
+		<input type="submit" value="上传" />
+	</form>
+</div>
+
+<script type="text/javascript">
+	var divlogo = $('#divsetlogo');
+	divlogo.attr('style','position:absolute;border:1px solid #000;background:#FFF;padding:5px;');
+	divlogo.hide();
+	
+	var alogo = $('#divsetlogo a');
+	alogo.click(function (){
+		divlogo.hide();
+	});
+	
+	var setlogo = $('#setlogo');
+	setlogo.click(function (){
+		var offset = setlogo.offset();
+		var top = offset.top;
+		var left = offset.left;
+		//alert(top + '   ' + left);
+		
+		divlogo.show();
+		divlogo.offset({'top':top,'left':left});
+	});
+</script>

@@ -1,0 +1,34 @@
+<include file="Index:header" />
+		<div class="container">
+			<p>当前位置：圈子　>> 相册 >> 图片</p>
+		</div>
+		<div class="container">
+			<div class="section">
+				<h3 class="section_bar">图片列表</h3>
+				<div class="section_content">
+					<ul class="list" id="group_list">
+					
+					<?php 
+						foreach ($picsInfo as $pic): 
+							$pic['des'] = mb_substr($pic['des'],0,20,'utf-8');
+					?>
+					
+						<li>
+							<a href="__URL__/picinfo/pid/{$pic.id}/gid/<?php echo $_GET['gid']?>/aid/<?php echo $_GET['aid']; ?>/">
+							<img title="{$pic.des}" src="__PUBLIC__/uploads/{$pic.sm_url}" width="150" height="150" /><br />
+							</a>
+							<h4><a href="__URL__/picinfo/gid/<?php echo $_GET['gid']?>/aid/<?php echo $_GET['aid']; ?>">{$pic.name}</a></h4>
+							<div>上传人: {$pic.username}</div>
+							<div>评论数量：???</div>
+							<div>描述：{$pic.des}</div>
+						</li>
+						
+					<?php endforeach; ?>	
+						
+					</ul>
+					<div class="clear">{$pagestr}</div>
+				</div>
+			</div>
+		</div>
+    </body>
+</html>

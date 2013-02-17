@@ -1,0 +1,56 @@
+<include file="Index:header" />
+
+		<div class="container">
+			<p>当前位置：圈子　>> 相册 >> 图片</p>
+		</div>
+		<div class="container">
+			<a href="__PUBLIC__/uploads/{$pic.ori_url}" target="_black">
+			<img src="__PUBLIC__/uploads/{$pic.mid_url}" /></a>
+			<h4>{$pic.name}</h4>
+			上传时间：<?php echo date('Y-m-d H:i:s',$pic['addtime']);?>
+			<div>描述：{$pic.des}</div>
+			<div class="section">
+				<h3 class="section_bar">评论</h3>
+				<div class="section_content">
+					<dl class="remark">
+						<dt>XXX 在 2012-10-10 12:12:12 说：</dt>
+						<dd>
+							不错！
+						</dd>
+						<dt>XXX 在 2012-10-10 12:12:12 说：</dt>
+						<dd>
+							不错！
+						</dd>
+						<dt>XXX 在 2012-10-10 12:12:12 说：</dt>
+						<dd>
+							不错！
+						</dd>
+					</dl>
+					评论：<textarea rows="5" cols="50" id='content' ></textarea>
+					<br /><input type="submit" value="提交" id="sbm" />
+				</div>
+			</div>
+		</div>
+    </body>
+</html>
+<script type="text/javascript">
+$(function(){
+	$('#sbm').click(function(){
+		var content = $('#content').val();
+		var url = "__APP__/Group/addremark";
+		$.post(url,{'content':content,'pic_id':<?php echo $pic['id']; ?>},function(data){
+			if(data == 1){
+				
+				$('dl').append("<dt><?php echo $_SESSION['uname']; ?> 在 2012-10-10 12:12:12 说：</dt><dd>" + content + "</dd>")
+				
+				$('#content').val('');
+				
+			}else{
+				alert('评论失败~请稍后重试');
+			}
+			
+			
+		});
+	});
+});
+</script>

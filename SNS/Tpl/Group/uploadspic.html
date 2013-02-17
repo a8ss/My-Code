@@ -1,0 +1,47 @@
+<include file="Index:header" />
+
+		<div class="container" id="d1">
+			<form action="__ACTION__/gid/<?php echo $_GET['gid']; ?>" method="post" enctype="multipart/form-data">
+				<h1>上传图片</h1>
+				<hr />
+				选择相册：<select name="aid" >
+				
+				<?php foreach($AsInfo as $al): ?>
+					<option  value="{$al.id}">{$al.name}</option>
+				<?php endforeach; ?>
+					
+				</select><br />
+				<div class="upload_pic">
+					图片：<input type="file" name="file[]" /><br />
+					名称：<input type="text" name="name[]" /><br />
+					描述：<textarea rows="2" cols="70" name="des[]" ></textarea>
+				</div>
+				
+				<p><input type="submit" value="上传" /><input type="button" value="添加一张" id="add" />（最多同时上传５张,gif,jpg,png,最大1M一张）</p>
+			</form>
+		</div>
+    </body>
+</html>
+
+<script type="text/javascript">
+	var ct = 1;
+	function adddiv(){
+		if(ct < 5){
+			var div = $('#d1 div:first').clone();
+			var html = '<a href="#" onclick="rm(this)" >X</a><br />' + div.html();
+			div.html(html);
+			$('#d1 p').before(div);
+			++ct;
+		}else
+			alert('一次最多只能上传5张图片！');
+	}
+	
+	$(function (){
+		$('#add').click(adddiv);
+	});
+	
+	function rm(o){
+		$(o).parent().remove();
+		--ct;
+	}
+</script>

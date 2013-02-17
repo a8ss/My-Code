@@ -1,0 +1,102 @@
+<{include file='heard.html'}>
+
+<script>
+	var lastId = 0; 	//用于记录接收到的最大消息ID
+	var lastTime = new Date().getTime();	//最后发言时间
+	$(function(){
+		$('#bt').bind('click',sendMessage);
+		$('#message').focus();
+		
+		//按下回车键发送信息
+		$('#message').bind('keypress',function (e){
+			if(e.which == 13){
+				sendMessage();
+			}
+		});
+		
+		
+		//alert(preTime);
+		collect();
+	});
+	
+	
+	//接收数据
+	function collect(){
+		$.post('index.php?m=message&a=getMsg',{'lastId':lastId},function(data){
+			
+			if(data.length > 0){
+				$(data).each(function (i, item){
+					//判断是否是第一次请求
+					if(item.lastId){lastId = item.lastId;return;}
+					
+					//将获取到的最新一条消息的id缓存
+					if(item.id > lastId) lastId = item.id;
+					
+					var time = (item.addtime + '000') - 0;
+					var addtime = new Date(time);
+					/*var hour = addtime.getHours();
+					var mint = addtime.getMinutes();
+					var sec = addtime.getSeconds();*/
+					
+					addtime = addtime.getHours() + ':' + addtime.getMinutes() + ':' + addtime.getSeconds();
+					
+					var str = item.nick + ' 说：' + item.message + '&nbsp;&nbsp;[ ' + addtime + ' ]<br/>';
+					//var str = item.nick + ' 说：' + item.message + '<br/>';
+					$('#content').append(str);
+				});
+			}
+		},'json');
+		setTimeout('collect()',5000);
+	}
+	
+	function checkMsg(str){
+		if(str.length < 3)return false;
+		if(str == '')return false;
+		if(str[0] == '<')return false;
+		return true;
+	}
+	
+	//发送数据
+	function sendMessage(){
+		var nowTime = new Date().getTime();
+		//判断发言间隔
+		if((lastTime + 5000) > nowTime){
+			displaySp('发言间隔5秒');
+			return;
+		}
+		
+		
+		//获取信息
+		var msg = $('#message').val();
+		//过去用户输入的信息
+		if(checkMsg(msg)){
+		
+			$.post('index.php?m=message&a=send',{'msg':msg},function(msg){
+				displaySp(msg);
+			},'text');
+			
+			//发送完成  一些首尾工作
+			lastTime = nowTime;
+			$('#message').val('');
+		
+		}else{
+			$('#message').val('');
+			displaySp('请勿输入非法内容！~');
+		}
+	}
+	
+	
+	function displaySp(str){
+		var sp = $('#sp1');
+		sp.html(str);
+		setTimeout(function(){ sp.html(''); },3000);
+	}
+</script>
+
+	<div><{$user_nick}></div>
+	<div class="contBox" id="content" ></div>
+	<input type = "text" id="message" />
+	
+	<input type="button" id ="bt" value="发送" /><span id='sp1'></span>
+	
+<{include file='flood.html' }>
